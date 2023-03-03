@@ -2,7 +2,6 @@ package net.javaguides.springboot.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,8 +17,11 @@ import net.javaguides.springboot.service.EmployeeService;
 @Controller
 public class EmployeeController {
 
-	@Autowired
-	private EmployeeService employeeService;
+	private final EmployeeService employeeService;
+
+	public EmployeeController(EmployeeService employeeService) {
+		this.employeeService = employeeService;
+	}
 	
 	// display list of employees
 	@GetMapping("/")
