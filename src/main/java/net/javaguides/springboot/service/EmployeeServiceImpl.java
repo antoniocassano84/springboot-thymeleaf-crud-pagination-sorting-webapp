@@ -18,41 +18,29 @@ import net.javaguides.springboot.repository.EmployeeRepository;
 @AllArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
 
-	private EmployeeRepository employeeRepository;
+	private EmployeeRepository empRepo;
 
 	@Override
-	public List<Employee> getAllEmployees() {
-		return employeeRepository.findAll();
+	public List<Employee> getAllEmployee() {
+		return empRepo.findAll();
 	}
 
 	@Override
-	public void saveEmployee(Employee employee) {
-		this.employeeRepository.save(employee);
+	public void save(Employee employee) {
+		empRepo.save(employee);
 	}
 
 	@Override
-	public Employee getEmployeeById(long id) {
-		Optional<Employee> optional = employeeRepository.findById(id);
-		Employee employee = null;
+	public Employee getById(Long id) {
+		Optional<Employee> optional = empRepo.findById(id);
 		if (optional.isPresent()) {
-			employee = optional.get();
-		} else {
-			throw new RuntimeException(" Employee not found for id :: " + id);
+			return optional.get();
 		}
-		return employee;
+		else throw new RuntimeException("Employee not found for id : " + id);
 	}
 
 	@Override
-	public void deleteEmployeeById(long id) {
-		this.employeeRepository.deleteById(id);
-	}
-
-	@Override
-	public Page<Employee> findPaginated(int pageNo, int pageSize, String sortField, String sortDirection) {
-		Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() :
-			Sort.by(sortField).descending();
-		
-		Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
-		return this.employeeRepository.findAll(pageable);
+	public void deleteViaId(long id) {
+		empRepo.deleteById(id);
 	}
 }
